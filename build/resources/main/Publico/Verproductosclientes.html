@@ -1,0 +1,166 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</div>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<script type="text/javascript">
+            //starts the carousel
+            $document.ready(function () {
+                $('#myCarousel').carousel();
+            });
+        </script>
+<style>
+    .thumbnail {
+    padding:0px;
+}
+.panel {
+	position:relative;
+}
+.panel>.panel-heading:after,.panel>.panel-heading:before{
+	position:absolute;
+	top:11px;left:-16px;
+	right:100%;
+	width:0;
+	height:0;
+	display:block;
+	content:" ";
+	border-color:transparent;
+	border-style:solid solid outset;
+	pointer-events:none;
+}
+.panel>.panel-heading:after{
+	border-width:7px;
+	border-right-color:#f7f7f7;
+	margin-top:1px;
+	margin-left:2px;
+}
+.panel>.panel-heading:before{
+	border-right-color:#ddd;
+	border-width:8px;
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  height: 100px;
+  width: 100px;
+  outline: black;
+  background-size: 100%, 100%;
+  background-image: none;
+}
+
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 55px;
+  color: red;
+}
+
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 55px;
+  color: red;
+}
+</style>
+<script>
+    var c = document.getElementBy('comment');
+    c.lista = 5;
+</script>
+    <div  style="min-height= 100px;"></div>
+    <div>
+
+        <div class="row" >
+
+            <div class="col-sm-7">
+                <h1 class="display-4" th:text="${nombre}">Producto</h1>
+                <p class="lead" th:text="'Numero de identificacion: '+${id}+' '"></p>
+<!--                <p class="lead" th:text="'Mostrando '+${cant}+' comentarios'"></p>-->
+                <br>
+
+                    <div class="card" style="width: 100%;">
+                        <div class="card-body">
+                            <h5 class="card-title">Descripcion</h5>
+                            <p class="card-text" th:text="${descripcion}">Descripcion del producto</p>
+                        </div>
+                    </div>
+                <br>
+                <p><a href="/">Ir a pagina principal</a></p>
+
+            </div>
+
+            <div class="col-sm-5">
+                <div>
+                    <div th:id="'carouselFotos'+${id}" class="carousel slide" data-ride="carousel" style="width: 300px; height: 300px;">
+
+                        <div class="carousel-inner">
+
+                            <div class="carousel-item" th:each="foto : ${fotos}" th:class="${fotoStat.first}? 'carousel-item active' : 'carousel-item'">
+                                <img class="d-block w-100" th:src="@{'data:'+${foto.getMimeType()}+';base64,'+${foto.getFotoBase64()}}" alt="First slide">
+                            </div>
+
+                        </div>
+                        <a class="carousel-control-prev" th:href="'#carouselFotos'+${id}" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" th:href="'#carouselFotos'+${id}" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="container" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3>Comentarios</h3>
+                    </div><!-- /col-sm-12 -->
+                </div><!-- /row -->
+                <div th:each="comentario : ${listaComentarios}" class="row" >
+                    <div class="col-sm-1">
+                        <div class="thumbnail">
+                            <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                        </div><!-- /thumbnail -->
+                    </div><!-- /col-sm-1 -->
+
+                    <div class="col-sm-5">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <strong th:text ="${comentario.usuario.usuario}" >myusername</strong> <span class="text-muted" th:text ="${comentario.fechaCreado}">commented 5 days ago</span>
+                                <a th:href="'/eliminarComentario/'+${comentario.id_comentario}"> Borrar</a>
+
+
+
+                            <div class="panel-body" th:text ="${comentario.contenido}">
+                                Panel content
+                            </div><!-- /panel-body -->
+                        </div><!-- /panel panel-default -->
+                    </div><!-- /col-sm-5 -->
+                </div><!-- /row -->
+
+        </div>
+
+                <form th:action="'/nuevocomentario/'+${id}" method="post">
+
+
+
+
+                    <div class="form-group" style="content-align:left;">
+                        <label for="contenido">Comentar producto:</label>
+                        <textarea class="form-control" id="contenido" name="contenido" rows="5"></textarea>
+                        <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+                    </div>
+
+                </form>
+    </div>
+
+
+<!-- /container -->
